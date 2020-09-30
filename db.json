@@ -1,25 +1,27 @@
-[
-    {
-        "id": 68,
-        "name": "The nuts-n-bolts that can blow your chances in a selection process",
-        "country": "Canada",
-        "city": "Vancouver",
-        "state": "British Columbia",
-        "slug": "the-nuts-n-bolts-that-can-blow-your-chances-in-a-selection-process",
-        "promoted": false,
-        "startDate": "2020-10-16T00:00:00",
-        "endDate": "2020-10-16T00:00:00",
-        "startApplicationDate": "2020-09-30T00:00:00",
-        "endApplicationDate": "2020-10-16T00:00:00",
-        "isOnline": false,
-        "eventType": 2,
-        "applied": false,
-        "possibleToApply": true,
-        "subtitle": "October 16, 2020",
-        "theEvent": "<p>&nbsp;</p>\n<p>Do you ever get the feeling that you have a strong profile, but you are still not getting called for an interview abroad? You might be missing a crucial thing and don't even know it.</p>\n<p><br></p>\n<p>But worry no more, we are here to help.</p>\n<p><br></p>\n<p>Join us for a FREE webinar on <strong>October 16th, 8 AM (PST) </strong>and find out how you can improve your international profile and get more interviews.</p>",
-        "theCandidates": "<p>VanHack is looking for candidates with 3 or more years of professional experience.</p>\n  <p>Candidates also need to have advanced or fluent English and be able to attend the Webinar event on October 16 in person.</p>\n  <p>Most importantly, candidates must be willing to get a job in Canada and/or Europe, and to relocate in the second semester of 2020.</p>",
-        "flag": "https://vanhackblobstorageprod.blob.core.windows.net/flags/globe-www.svg",
-        "cover": "https://vanhackblobstorageprod.blob.core.windows.net/img/events/cover/3b249262-93c9-4d20-a589-a9756f97e3df.jpg",
-        "thumb": "https://vanhackblobstorageprod.blob.core.windows.net/img/events/thumbnail/83fd65ad-ff86-47c1-9ccc-88aca68b4ed2.jpg"
-    }
-]
+{
+    "events": [
+        {
+            "id": 68,
+            "name": "The nuts-n-bolts that can blow your chances in a selection process",
+            "country": "Canada",
+            "city": "Vancouver",
+            "state": "British Columbia",
+            "slug": "the-nuts-n-bolts-that-can-blow-your-chances-in-a-selection-process",
+            "promoted": false,
+            "startDate": "2020-10-16T00:00:00",
+            "endDate": "2020-10-16T00:00:00",
+            "startApplicationDate": "2020-09-30T00:00:00",
+            "endApplicationDate": "2020-10-16T00:00:00",
+            "isOnline": false,
+            "eventType": 2,
+            "applied": false,
+            "possibleToApply": true,
+            "subtitle": "October 16, 2020",
+            "theEvent": "<p>&nbsp;</p>\n<p>Do you ever get the feeling that you have a strong profile, but you are still not getting called for an interview abroad? You might be missing a crucial thing and don't even know it.</p>\n<p><br></p>\n<p>But worry no more, we are here to help.</p>\n<p><br></p>\n<p>Join us for a FREE webinar on <strong>October 16th, 8 AM (PST) </strong>and find out how you can improve your international profile and get more interviews.</p>",
+            "theCandidates": "<p>VanHack is looking for candidates with 3 or more years of professional experience.</p>\n  <p>Candidates also need to have advanced or fluent English and be able to attend the Webinar event on October 16 in person.</p>\n  <p>Most importantly, candidates must be willing to get a job in Canada and/or Europe, and to relocate in the second semester of 2020.</p>",
+            "flag": "https://vanhackblobstorageprod.blob.core.windows.net/flags/globe-www.svg",
+            "cover": "https://vanhackblobstorageprod.blob.core.windows.net/img/events/cover/3b249262-93c9-4d20-a589-a9756f97e3df.jpg",
+            "thumb": "https://vanhackblobstorageprod.blob.core.windows.net/img/events/thumbnail/83fd65ad-ff86-47c1-9ccc-88aca68b4ed2.jpg"
+        }
+    ]
+}
