@@ -103,11 +103,12 @@ body {
     width: 100%;
     padding: 25px 0;
 
-    .loading {
+    .loading,
+    .no-results {
       display: flex;
       justify-content: center;
-      align-items: center;
-      font-size: 20px;
+      align-items: center; 
+      font-size: 25px;
       color: $bg-blue-dark;
       font-weight: 600;
       padding: 50px 0;
@@ -122,7 +123,21 @@ body {
     img,
     p {
       display: block;
-      margin: 10px auto;
+      margin: 20px auto;
+    }
+    a {
+      text-decoration: none;
+      color: $bg-blue;
     }
   }
+}
+
+// transition
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }

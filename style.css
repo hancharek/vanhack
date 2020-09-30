@@ -107,11 +107,12 @@ body {
   padding: 25px 0;
 }
 
-#app section .loading {
+#app section .loading,
+#app section .no-results {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  font-size: 25px;
   color: #00569c;
   font-weight: 600;
   padding: 50px 0;
@@ -128,5 +129,20 @@ body {
 #app footer img,
 #app footer p {
   display: block;
-  margin: 10px auto;
+  margin: 20px auto;
+}
+
+#app footer a {
+  text-decoration: none;
+  color: #0675ce;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }

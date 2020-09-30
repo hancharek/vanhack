@@ -15,6 +15,11 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
     />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"
+      integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg=="
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   </head>
   <body>
@@ -45,11 +50,19 @@
       </nav>
       <section>
         <div class="container">
-          <div v-if="loading" class="loading">
-            <div>Loading....</div>
-          </div>
-          <div v-else-if="events.length">Events here</div>
-          <div v-else>No events to show</div>
+          <transition name="fade" mode="out-in">
+            <div v-if="loading" class="loading" key="loading">
+              <div>Loading....</div>
+            </div>
+            <div v-else-if="getEventsFiltered.length" key="events">
+              <div v-for="event in getEventsFiltered" class="card-event">
+                    {{event.name}}
+              </div>
+            </div>
+            <div v-else class="no-results" key="no-results">
+              No events to show
+            </div>
+          </transition>
         </div>
       </section>
       <footer>
@@ -58,7 +71,13 @@
           src="https://vanhack.com/static-desktop/699de0b98e1d66b82a32905802aa6cbc.svg"
           alt="VanHack"
         />
-        <p>© 2020 VanHack</p>
+        <p>
+          © 2020 VanHack <br /><br />
+          Git Repository:
+          <a href="https://github.com/roble/vanhack"
+            >github.com/roble/vanhack</a
+          >
+        </p>
       </footer>
     </div>
     <script src="script.js"></script>
