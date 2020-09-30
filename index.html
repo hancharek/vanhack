@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>VanHack's Event Page</title>
+    <link
+      rel="icon"
+      href="https://www.vanhack.com/wp-content/uploads/2018/11/favicon.ico"
+      type="image/x-icon"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="container">
+          <div id="logo">
+            <img
+              src="https://vanhack.com/static-desktop/699de0b98e1d66b82a32905802aa6cbc.svg"
+              alt="VanHack"
+            />
+          </div>
+          <h1>Events</h1>
+        </div>
+      </header>
+      <nav id="categories">
+        <div class="container">
+          <ul>
+            <li
+              :class="{ active: filterByCategory === category.id }"
+              @click="filterByCategory = category.id"
+              v-for="category in categories"
+            >
+              {{category.name}}
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <section>
+        <div class="container">
+          <div v-if="loading" class="loading">
+            <div>Loading....</div>
+          </div>
+          <div v-else-if="events.length">Events here</div>
+          <div v-else>No events to show</div>
+        </div>
+      </section>
+      <footer>
+        <img
+          id="logo"
+          src="https://vanhack.com/static-desktop/699de0b98e1d66b82a32905802aa6cbc.svg"
+          alt="VanHack"
+        />
+        <p>© 2020 VanHack</p>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

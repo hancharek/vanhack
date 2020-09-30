@@ -1,0 +1,128 @@
+$bg-blue: #0675ce;
+$bg-blue-dark: #00569c;
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  background: #f2f6f9;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  // Small devices (landscape phones, 576px and up)
+  // @media (min-width: 576px) { ... }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .container {
+    max-width: 992px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  header {
+    width: 100%;
+    background-color: $bg-blue;
+    padding: 25px 0;
+    color: #fff;
+
+    .container {
+      display: flex;
+      padding: 0 15px;
+
+      #logo {
+        text-align: left;
+        img {
+          height: 50px;
+        }
+      }
+
+      h1 {
+        text-align: right;
+        font-size: 36px;
+        line-height: 1.5;
+      }
+      #logo,
+      h1 {
+        flex-grow: 1;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+  #categories {
+    background-color: $bg-blue-dark;
+    width: 100%;
+    padding: 15px 0;
+    ul {
+      display: flex;
+      list-style: none;
+      flex-direction: row;
+      flex-wrap: wrap;
+      flex-basis: 100%;
+      margin: 0;
+      padding: 0;
+      li {
+        display: block;
+        color: rgba(#fff, 0.85);
+        cursor: pointer;
+        font-size: 16px;
+        padding: 5px 10px;
+        border: 3px solid;
+        border-color: transparent;
+        transition: all 0.3s;
+        border-radius: 4px;
+        font-weight: 400;
+        margin: 5px 8px;
+        &:hover,
+        &:active,
+        &:focus {
+          color: #fff;
+          border-color: #fff;
+        }
+        &.active {
+          border-color: #fff;
+          background-color: #fff;
+          color: $bg-blue-dark;
+        }
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  section {
+    width: 100%;
+    padding: 25px 0;
+
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      color: $bg-blue-dark;
+      font-weight: 600;
+      padding: 50px 0;
+    }
+  }
+  footer {
+    width: 100%;
+    background: #292e33;
+    color: #fff;
+    text-align: center;
+    padding: 25px 0;
+    img,
+    p {
+      display: block;
+      margin: 10px auto;
+    }
+  }
+}
