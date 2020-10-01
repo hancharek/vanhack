@@ -15,6 +15,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
     />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.4/css/all.css"
+    />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"
       integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg=="
@@ -35,15 +39,15 @@
           <h1>Events</h1>
         </div>
       </header>
-      <nav id="categories">
+      <nav id="types">
         <div class="container">
           <ul>
             <li
-              :class="{ active: filterByCategory === category.id }"
-              @click="filterByCategory = category.id"
-              v-for="category in categories"
+              :class="{ active: filterByType === type.id ,premium: type.id == 5}"
+              @click="filterByType = type.id"
+              v-for="type in types"
             >
-              {{category.name}}
+              {{type.name}}
             </li>
           </ul>
         </div>
@@ -55,9 +59,59 @@
               <div>Loading....</div>
             </div>
             <div v-else-if="getEventsFiltered.length" key="events">
-              <div v-for="event in getEventsFiltered" class="card-event">
-                    {{event.name}}
-              </div>
+              <transition-group name="scale" tag="div" id="events-container">
+                <article
+                  v-for="event in getEventsFiltered"
+                  class="card"
+                  :class="{premium: !event.can_apply}"
+                  :key="event.id"
+                >
+                  <keep-alive>
+                    <picture>
+                      <img :src="`${event.cover}?random=${event.id}`" alt="" />
+                    </picture>
+                  </keep-alive>
+                  <div class="card-content">
+                    <div class="event-type">
+                      <i
+                        class="fa"
+                        :class="{'fa-tag': event.can_apply,'fa-star': !event.can_apply}"
+                      ></i>
+                      {{ event.type.name }}
+                    </div>
+                    <div
+                      class="event-location"
+                      :class="{online: event.is_online }"
+                    >
+                      <template v-if="event.is_online">
+                        <i class="fa fa-globe"></i>
+                        Online
+                      </template>
+                      <template v-else>
+                        <i class="fa fa-map-marker-alt"></i>
+                        {{ event.country }} - {{event.city}}
+                      </template>
+                    </div>
+                    <div class="title">{{event.title}}</div>
+                    <div class="resume">
+                      {{event.content.length > 100 ?
+                      (event.content.substring(0,100) + '...') : event.content
+                      }}
+                    </div>
+                    <div class="footer">
+                      <p class="event-date">
+                        <i class="fa fa-calendar-check"></i>
+                        {{event.start_date}} - {{event.end_date}}
+                      </p>
+                      <a
+                        class="btn btn-details"
+                        :class="{'btn-blue': event.can_apply,'btn-orange': !event.can_apply}"
+                        >See details</a
+                      >
+                    </div>
+                  </div>
+                </article>
+              </transition-group>
             </div>
             <div v-else class="no-results" key="no-results">
               No events to show
@@ -79,6 +133,22 @@
           >
         </p>
       </footer>
+      <transition name="fade">
+        <div v-if="showModalError">
+          <div class="modal-overlay"></div>
+          <div class="modal modal-error">
+            <div class="modal-titte"></div>
+            <div class="modal-body">
+              <h3>Ops!</h3>
+              You need a premium account to apply to this webinar.
+            </div>
+            <div class="modal-footer">
+              <a class="btn btn-red btn-close" @click="showModalError = false">Close</a>
+              <a href="https://vanhack.com/checkout" target="_blank" class="btn btn-orange btn-premium">Join premium</a>
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
     <script src="script.js"></script>
   </body>

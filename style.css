@@ -4,6 +4,7 @@ html {
   height: 100%;
   font-family: "Roboto", sans-serif;
   background: #f2f6f9;
+  color: #4d5a64;
 }
 
 body {
@@ -16,6 +17,41 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+#app .btn {
+  padding: 15px 20px;
+  font-weight: 400;
+  font-size: 16px;
+  transition: all 0.2s;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#app .btn.btn-blue {
+  background-color: #0675ce;
+}
+
+#app .btn.btn-blue:hover {
+  background-color: #00569c;
+}
+
+#app .btn.btn-orange {
+  background-color: #fcab10;
+}
+
+#app .btn.btn-orange:hover {
+  background-color: #d68e03;
+}
+
+#app .btn.btn-red {
+  background-color: #d93131;
+}
+
+#app .btn.btn-red:hover {
+  background-color: #b62121;
 }
 
 #app .container {
@@ -57,13 +93,13 @@ body {
   padding: 0;
 }
 
-#app #categories {
+#app #types {
   background-color: #00569c;
   width: 100%;
   padding: 15px 0;
 }
 
-#app #categories ul {
+#app #types ul {
   display: flex;
   list-style: none;
   flex-direction: row;
@@ -73,7 +109,7 @@ body {
   padding: 0;
 }
 
-#app #categories ul li {
+#app #types ul li {
   display: block;
   color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
@@ -87,18 +123,28 @@ body {
   margin: 5px 8px;
 }
 
-#app #categories ul li:hover, #app #categories ul li:active, #app #categories ul li:focus {
+#app #types ul li:hover, #app #types ul li:active, #app #types ul li:focus {
   color: #fff;
   border-color: #fff;
 }
 
-#app #categories ul li.active {
+#app #types ul li:hover.premium, #app #types ul li:active.premium, #app #types ul li:focus.premium {
+  border-color: #fcab10;
+  color: #fcab10;
+}
+
+#app #types ul li.active {
   border-color: #fff;
   background-color: #fff;
   color: #00569c;
 }
 
-#app #categories ul li:first-child {
+#app #types ul li.active.premium {
+  background-color: #fcab10;
+  color: #fff;
+}
+
+#app #types ul li:first-child {
   margin-left: 0;
 }
 
@@ -116,6 +162,166 @@ body {
   color: #00569c;
   font-weight: 600;
   padding: 50px 0;
+}
+
+#app section #events-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#app section #events-container .card {
+  background: #f4f4f4;
+  border-radius: 5px;
+  box-shadow: 0 20px 40px -10px rgba(41, 46, 51, 0.25);
+  flex: 0 1 calc(50% - 15px);
+  flex-direction: column;
+  overflow: hidden;
+  margin-bottom: 30px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+#app section #events-container .card picture img {
+  min-height: 300px;
+  width: 100%;
+}
+
+#app section #events-container .card-content {
+  position: relative;
+  padding: 25px;
+}
+
+#app section #events-container .card-content .title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#app section #events-container .card-content .resume {
+  font-size: 16px;
+  font-weight: 400;
+  color: #7c8d9b;
+  margin-top: 10px;
+}
+
+#app section #events-container .card-content .event-type,
+#app section #events-container .card-content .event-location {
+  position: absolute;
+  top: -20px;
+  padding: 8px 16px;
+  background: #fff;
+  display: inline-block;
+  border-radius: 25px;
+  box-shadow: 0 0 20px -5px rgba(41, 46, 51, 0.05);
+  font-size: 16px;
+  font-weight: 400;
+  background-color: #0675ce;
+  color: #fff;
+}
+
+#app section #events-container .card-content .event-type i,
+#app section #events-container .card-content .event-location i {
+  margin-right: 5px;
+}
+
+#app section #events-container .card-content .event-type {
+  left: 20px;
+  color: #00569c;
+  background: #fff;
+}
+
+#app section #events-container .card-content .event-location {
+  right: 20px;
+}
+
+#app section #events-container .card-content .event-location.online {
+  background-color: #41b809;
+}
+
+#app section #events-container .card-content .event-date {
+  font-size: 16px;
+  color: #7c8d9b;
+}
+
+#app section #events-container .card-content .footer {
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#app section #events-container .card-content .footer .btn-details {
+  display: inline-block;
+  margin-left: auto;
+}
+
+#app section #events-container .card:hover {
+  box-shadow: 0 20px 40px -5px rgba(41, 46, 51, 0.5);
+  transform: scale(1.05);
+}
+
+#app section #events-container .card.premium .event-type {
+  background-color: #fcab10;
+  color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+  #app section #events-container .card {
+    flex: 0 0 100%;
+  }
+  #app section #events-container .card:hover {
+    transform: scale(1);
+  }
+}
+
+#app .modal-overlay {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background-color: rgba(41, 46, 51, 0.5);
+  z-index: 1000;
+}
+
+#app .modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 10px;
+  z-index: 1010;
+}
+
+#app .modal.modal-error {
+  width: 300px;
+}
+
+#app .modal.modal-error .modal-body {
+  font-size: 18px;
+  padding: 25px 15px;
+  text-align: center;
+}
+
+#app .modal .modal-body {
+  font-size: 18px;
+  padding: 15px;
+  text-align: center;
+}
+
+#app .modal .modal-footer {
+  padding: 15px;
+  display: flex;
+  margin-top: 10px;
+}
+
+#app .modal .modal-footer .btn-premium {
+  margin-left: auto;
 }
 
 #app footer {
@@ -139,10 +345,29 @@ body {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease;
 }
 
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.scale-enter-active,
+.scale-move,
+.scale-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.scale-enter {
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.scale-leave-active {
+  opacity: 0;
+  position: absolute;
+  -webkit-transform: scale(0);
+  transform: scale(0);
 }

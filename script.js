@@ -2,8 +2,8 @@ new Vue({
   el: "#app",
   data() {
     return {
-      // Define categories and set if it is public or no to apply
-      categories: [
+      // Define types and set if it is public or no to apply
+      types: [
         { id: 'all', name: 'All' },
         { id: 1, name: 'MeetUp' },
         { id: 2, name: 'Leap' },
@@ -12,10 +12,11 @@ new Vue({
         { id: 5, name: 'Premium-only Webinar' },
         { id: 6, name: 'Open Webinar' },
       ],
-      // Filter by category, default: all
-      filterByCategory: "all",
+      // Filter by type, default: all
+      filterByType: "all",
       events: [],
       loading: true,
+      showModalError: true
     };
   },
   created() {
@@ -29,7 +30,13 @@ new Vue({
         .then(response => {
           console.log(response);
           // Get the fetched  data
-          this.events = response.data;
+          this.events = response.data
+            .map(e => ({
+              ...e,
+              type: this.types.find(f => f.id === e.type_id),
+              start_date: new Date(e.start_date).toLocaleDateString(),
+              end_date: new Date(e.end_date).toLocaleDateString()
+            }));
         }).catch(err => {
           // Give some feedback of the error
         })
@@ -41,9 +48,9 @@ new Vue({
   },
   computed: {
     getEventsFiltered() {
-      return this.filterByCategory === 'all'
+      return this.filterByType === 'all'
         ? this.events
-        : this.events.filter(e => e.eventType === this.filterByCategory)
+        : this.events.filter(e => e.type_id === this.filterByType)
     }
   }
 });
