@@ -283,8 +283,8 @@ body {
   bottom: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(5px);
-  background-color: rgba(41, 46, 51, 0.5);
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 }
 
@@ -296,6 +296,14 @@ body {
   background-color: #fff;
   border-radius: 10px;
   z-index: 1010;
+  width: 992px;
+}
+
+@media only screen and (max-width: 991px) {
+  #app .modal {
+    width: calc(100% - 30px);
+    min-width: 300px;
+  }
 }
 
 #app .modal.modal-error {
@@ -310,8 +318,15 @@ body {
 
 #app .modal .modal-body {
   font-size: 18px;
-  padding: 15px;
   text-align: center;
+}
+
+#app .modal .modal-body .image-cover {
+  height: 300px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 10px 10px 0 0;
 }
 
 #app .modal .modal-footer {
@@ -320,7 +335,7 @@ body {
   margin-top: 10px;
 }
 
-#app .modal .modal-footer .btn-premium {
+#app .modal .modal-footer .btn-ok {
   margin-left: auto;
 }
 
@@ -343,31 +358,15 @@ body {
   color: #0675ce;
 }
 
-.fade-enter-active,
+.fade-enter-active {
+  transition: all 0.2s ease;
+}
+
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-}
-
-.scale-enter-active,
-.scale-move,
-.scale-leave-active {
-  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-}
-
-.scale-enter {
-  opacity: 0;
-  -webkit-transform: scale(0);
-  transform: scale(0);
-}
-
-.scale-leave-active {
-  opacity: 0;
-  position: absolute;
-  -webkit-transform: scale(0);
-  transform: scale(0);
 }

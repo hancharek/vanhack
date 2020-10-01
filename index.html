@@ -59,7 +59,7 @@
               <div>Loading....</div>
             </div>
             <div v-else-if="getEventsFiltered.length" key="events">
-              <transition-group name="scale" tag="div" id="events-container">
+              <transition-group name="fade" tag="div" id="events-container">
                 <article
                   v-for="event in getEventsFiltered"
                   class="card"
@@ -101,9 +101,13 @@
                     <div class="footer">
                       <p class="event-date">
                         <i class="fa fa-calendar-check"></i>
-                        {{event.start_date}} - {{event.end_date}}
+                        {{event.start_date}}
+                        <template v-if="event.start_date !== event.end_date"
+                          >- {{event.end_date}}</template
+                        >
                       </p>
                       <a
+                        @click="showModalDetails = true;showingEvent = event"
                         class="btn btn-details"
                         :class="{'btn-blue': event.can_apply,'btn-orange': !event.can_apply}"
                         >See details</a
@@ -127,25 +131,96 @@
         />
         <p>
           © 2020 VanHack <br /><br />
+          This project was made for code verification on VanHack platform.
+          <br />
           Git Repository:
-          <a href="https://github.com/roble/vanhack"
-            >github.com/roble/vanhack</a
-          >
+          <a href="https://github.com/roble/vanhack">
+            github.com/roble/vanhack
+          </a>
         </p>
       </footer>
       <transition name="fade">
-        <div v-if="showModalError">
-          <div class="modal-overlay"></div>
-          <div class="modal modal-error">
-            <div class="modal-titte"></div>
-            <div class="modal-body">
-              <h3>Ops!</h3>
-              You need a premium account to apply to this webinar.
+        <div
+          v-if="showModalError || showModalDetails"
+          class="modal-overlay"
+        ></div>
+      </transition>
+      <transition name="fade">
+        <div class="modal modal-error" v-if="showModalError">
+          <div class="modal-titte"></div>
+          <div class="modal-body">
+            <h3>Ops!</h3>
+            You need a premium account to apply to this webinar.
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-red btn-close" @click="showModalError = false"
+              >Close</a
+            >
+            <a
+              href="https://vanhack.com/checkout"
+              target="_blank"
+              class="btn btn-orange btn-ok"
+              >Join premium</a
+            >
+          </div>
+        </div>
+      </transition>
+      <transition name="fade">
+        <div class="modal modal-details" v-if="showModalDetails">
+          <div class="modal-body">
+            <div
+              class="image-cover"
+              :style="{'background-image': `url('${showingEvent.cover}')`}"
+            >
+              {{`${showingEvent.cover}?random=${showingEvent.id}`}}
             </div>
-            <div class="modal-footer">
-              <a class="btn btn-red btn-close" @click="showModalError = false">Close</a>
-              <a href="https://vanhack.com/checkout" target="_blank" class="btn btn-orange btn-premium">Join premium</a>
+            <div class="event-title">{{ showingEvent.title }}</div>
+            <div class="card-content">
+              <div class="event-type">
+                <i
+                  class="fa"
+                  :class="{'fa-tag': showingEvent.can_apply,'fa-star': !showingEvent.can_apply}"
+                ></i>
+                {{ showingEvent.type.name }}
+              </div>
+              <div
+                class="event-location"
+                :class="{online: showingEvent.is_online }"
+              >
+                <template v-if="showingEvent.is_online">
+                  <i class="fa fa-globe"></i>
+                  Online
+                </template>
+                <template v-else>
+                  <i class="fa fa-map-marker-alt"></i>
+                  {{ showingEvent.country }} - {{showingEvent.city}}
+                </template>
+              </div>
+              <div class="title">{{showingEvent.title}}</div>
+              <div class="resume">{{showingEvent.content.length }}</div>
+              <div class="footer">
+                <p class="event-date">
+                  <i class="fa fa-calendar-check"></i>
+                  {{showingEvent.start_date}}
+                  <template
+                    v-if="showingEvent.start_date !== showingEvent.end_date"
+                    >- {{showingEvent.end_date}}</template
+                  >
+                </p>
+              </div>
             </div>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-red btn-close" @click="showModalDetails = false"
+              >Close</a
+            >
+            <a
+              href="https://vanhack.com/checkout"
+              target="_blank"
+              class="btn btn-ok"
+              :class="{'btn-orange': !showingEvent.can_apply,'btn-blue': showingEvent.can_apply}"
+              >Apply now</a
+            >
           </div>
         </div>
       </transition>

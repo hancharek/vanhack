@@ -16,7 +16,9 @@ new Vue({
       filterByType: "all",
       events: [],
       loading: true,
-      showModalError: true
+      showModalDetails: false,
+      showModalError: false,
+      showingEvent: {}
     };
   },
   created() {
