@@ -1,1 +1,1 @@
-# vanhack
+# This project was made for code verification on VanHack platform

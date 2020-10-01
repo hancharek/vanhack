@@ -27,7 +27,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   </head>
   <body>
-    <div id="app">
+    <div id="app" :class="{'modal-open': showModalDetails || showModalError}">
       <header>
         <div class="container">
           <div id="logo">
@@ -43,10 +43,11 @@
         <div class="container">
           <ul>
             <li
-              :class="{ active: filterByType === type.id ,premium: type.id == 5}"
+              :class="[filterByType === type.id ? ('bg-' + type.color) : '',{ active: filterByType === type.id}]"
               @click="filterByType = type.id"
               v-for="type in types"
             >
+              <i v-if="type.icon" class="fa" :class="type.icon"></i>
               {{type.name}}
             </li>
           </ul>
@@ -62,21 +63,22 @@
               <transition-group name="fade" tag="div" id="events-container">
                 <article
                   v-for="event in getEventsFiltered"
-                  class="card"
-                  :class="{premium: !event.can_apply}"
+                  class="card event"
+                  :class="['b-t-' + event.type.color,{premium: !event.can_apply}]"
                   :key="event.id"
                 >
+                  <a
+                    class="event-share-button"
+                    @click="showModalShare = true;showingEvent = event"
+                  ></a>
                   <keep-alive>
                     <picture>
                       <img :src="event.cover" alt="" />
                     </picture>
                   </keep-alive>
                   <div class="card-content">
-                    <div class="event-type">
-                      <i
-                        class="fa"
-                        :class="{'fa-tag': event.can_apply,'fa-star': !event.can_apply}"
-                      ></i>
+                    <div class="event-type" :class="'bg-' + event.type.color">
+                      <i class="fa" :class="event.type.icon"></i>
                       {{ event.type.name }}
                     </div>
                     <div
@@ -107,10 +109,17 @@
                         >
                       </p>
                       <a
+                        v-if="!event.applied"
                         @click="showModalDetails = true;showingEvent = event"
                         class="btn btn-details"
                         :class="{'btn-blue': event.can_apply,'btn-orange': !event.can_apply}"
                         >See details</a
+                      >
+                      <a
+                        v-else
+                        @click="showModalDetails = true;showingEvent = event"
+                        class="btn btn-details btn-green"
+                        >Applied</a
                       >
                     </div>
                   </div>
@@ -141,15 +150,16 @@
       </footer>
       <transition name="fade">
         <div
-          v-if="showModalError || showModalDetails"
+          v-if="isModalOpen"
           class="modal-overlay"
+          :class="{upper: showModalError || showModalShare}"
         ></div>
       </transition>
       <transition name="fade">
         <div class="modal modal-error" v-if="showModalError">
           <div class="modal-titte"></div>
           <div class="modal-body">
-            <h3>Ops!</h3>
+            <h3>Whoops!</h3>
             You need a premium account to apply to this webinar.
           </div>
           <div class="modal-footer">
@@ -166,47 +176,254 @@
         </div>
       </transition>
       <transition name="fade">
-        <div class="modal modal-details" v-if="showModalDetails">
+        <div class="modal modal-share" v-if="showModalShare">
+          <div class="modal-titte"></div>
           <div class="modal-body">
-            <div
-              class="image-cover"
-              :style="{'background-image': `url('${showingEvent.cover}')`}"
-            >
-            </div>
-            <div class="event-title">{{ showingEvent.title }}</div>
-            <div class="card-content">
-              <div class="event-type">
-                <i
-                  class="fa"
-                  :class="{'fa-tag': showingEvent.can_apply,'fa-star': !showingEvent.can_apply}"
-                ></i>
-                {{ showingEvent.type.name }}
-              </div>
-              <div
-                class="event-location"
-                :class="{online: showingEvent.is_online }"
+            <h3>Share this event with a friend</h3>
+            <p></p>
+            <div class="social-share-container">
+              <a
+                class="social-share-item"
+                target="_blank"
+                :href="`https://www.linkedin.com/shareArticle?mini=true&title=${showingEvent.title}&url=https%3A%2F%2Fvanhack.com%2Fblog`"
               >
-                <template v-if="showingEvent.is_online">
-                  <i class="fa fa-globe"></i>
-                  Online
-                </template>
-                <template v-else>
-                  <i class="fa fa-map-marker-alt"></i>
-                  {{ showingEvent.country }} - {{showingEvent.city}}
-                </template>
+                <svg
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 382 382"
+                  style="enable-background: new 0 0 382 382"
+                  xml:space="preserve"
+                >
+                  <path
+                    style="fill: #0077b7"
+                    d="M347.445,0H34.555C15.471,0,0,15.471,0,34.555v312.889C0,366.529,15.471,382,34.555,382h312.889
+	C366.529,382,382,366.529,382,347.444V34.555C382,15.471,366.529,0,347.445,0z M118.207,329.844c0,5.554-4.502,10.056-10.056,10.056
+	H65.345c-5.554,0-10.056-4.502-10.056-10.056V150.403c0-5.554,4.502-10.056,10.056-10.056h42.806
+	c5.554,0,10.056,4.502,10.056,10.056V329.844z M86.748,123.432c-22.459,0-40.666-18.207-40.666-40.666S64.289,42.1,86.748,42.1
+	s40.666,18.207,40.666,40.666S109.208,123.432,86.748,123.432z M341.91,330.654c0,5.106-4.14,9.246-9.246,9.246H286.73
+	c-5.106,0-9.246-4.14-9.246-9.246v-84.168c0-12.556,3.683-55.021-32.813-55.021c-28.309,0-34.051,29.066-35.204,42.11v97.079
+	c0,5.106-4.139,9.246-9.246,9.246h-44.426c-5.106,0-9.246-4.14-9.246-9.246V149.593c0-5.106,4.14-9.246,9.246-9.246h44.426
+	c5.106,0,9.246,4.14,9.246,9.246v15.655c10.497-15.753,26.097-27.912,59.312-27.912c73.552,0,73.131,68.716,73.131,106.472
+	L341.91,330.654L341.91,330.654z"
+                  />
+                </svg>
+              </a>
+              <a
+                class="social-share-item"
+                target="_blank"
+                :href="`https://twitter.com/intent/tweet?url=https%3A%2F%2Fvanhack.com%2Fevents&text=${showingEvent.title}`"
+              >
+                <svg
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 490.659 490.659"
+                  style="enable-background: new 0 0 490.659 490.659"
+                  xml:space="preserve"
+                >
+                  <path
+                    style="fill: #03a9f4"
+                    d="M487.84,92.931c-3.262-3.567-8.514-4.494-12.8-2.261c-4.406,2.002-8.964,3.65-13.632,4.928
+	c7.28-9.316,12.777-19.897,16.213-31.211c1.513-5.693-1.876-11.535-7.569-13.048c-3.04-0.808-6.281-0.233-8.857,1.571
+	c-16.219,8.777-33.458,15.52-51.328,20.075c-36.787-34.722-92.823-39.05-134.507-10.389c-32.109,21.71-49.786,59.232-46.08,97.813
+	c-69.603-5.931-133.642-40.422-176.896-95.275c-2.222-2.688-5.584-4.168-9.067-3.989c-3.532,0.212-6.728,2.162-8.533,5.205
+	c-14.68,23.997-18.933,52.944-11.776,80.149c3.67,13.978,9.961,27.132,18.539,38.763c-3.864-1.892-7.5-4.218-10.837-6.933
+	c-4.575-3.711-11.292-3.011-15.004,1.564c-1.54,1.899-2.382,4.269-2.383,6.714c0.634,39.467,22.306,75.588,56.832,94.72
+	c-4.658-0.572-9.256-1.557-13.739-2.944c-5.641-1.697-11.59,1.5-13.287,7.141c-0.74,2.461-0.567,5.107,0.487,7.451
+	c14.985,33.567,44.943,58.084,80.811,66.133c-34.173,19.28-73.523,27.381-112.533,23.168c-5.058-0.646-9.85,2.429-11.371,7.296
+	c-1.568,4.829,0.484,10.093,4.907,12.587c47.765,28.38,102.102,43.82,157.653,44.8c53.294-0.195,105.345-16.113,149.632-45.76
+	c84.544-56.107,137.237-156.843,129.899-246.976c18.077-13.381,33.758-29.725,46.379-48.341
+	C491.587,101.802,491.114,96.488,487.84,92.931z"
+                  />
+                </svg>
+              </a>
+              <a
+                class="social-share-item"
+                target="_blank"
+                :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fvanhack.com%2Fevents&t=${showingEvent.title}`"
+              >
+                <svg
+                  enable-background="new 0 0 24 24"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m21 0h-18c-1.655 0-3 1.345-3 3v18c0 1.654 1.345 3 3 3h18c1.654 0 3-1.346 3-3v-18c0-1.655-1.346-3-3-3z"
+                    fill="#3b5999"
+                  />
+                  <path
+                    d="m16.5 12v-3c0-.828.672-.75 1.5-.75h1.5v-3.75h-3c-2.486 0-4.5 2.014-4.5 4.5v3h-3v3.75h3v8.25h4.5v-8.25h2.25l1.5-3.75z"
+                    fill="#fff"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-blue btn-ok" @click="showModalShare = false"
+              >Close</a
+            >
+          </div>
+        </div>
+      </transition>
+      <transition name="fade">
+        <div class="modal modal-applied" v-if="showModalApplied">
+          <div class="modal-titte"></div>
+          <div class="modal-body">
+            <div class="success-icon">
+              <svg
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 286.054 286.054"
+                style="enable-background: new 0 0 286.054 286.054"
+                xml:space="preserve"
+                width="150"
+                heigth="150"
+              >
+                <g>
+                  <path
+                    style="fill: #3db39e"
+                    d="M143.031,0C64.027,0,0.004,64.04,0.004,143.027c0,78.996,64.031,143.027,143.027,143.027
+		c78.987,0,143.018-64.031,143.018-143.027C286.049,64.049,222.018,0,143.031,0z M143.031,259.236
+		c-64.183,0-116.209-52.026-116.209-116.209S78.857,26.818,143.031,26.818s116.2,52.026,116.2,116.209
+		S207.206,259.236,143.031,259.236z M199.241,82.187c-6.079-3.629-13.847-1.475-17.342,4.827l-47.959,86.147l-26.71-32.512
+		c-4.836-5.569-11.263-8.456-17.333-4.827c-6.079,3.638-8.591,12.39-4.657,18.004l37.169,45.241c2.78,3.611,5.953,5.775,9.27,6.392
+		l0.027,0.054l0.34,0.018c0.751,0.116,11.979,2.19,16.815-6.463l55.048-98.876C207.402,93.879,205.32,85.825,199.241,82.187z"
+                  />
+                </g>
+              </svg>
+            </div>
+            <h3>Success!!!</h3>
+            Congratulations your application has been submitted successfully.
+            You'll receive an email with all necessary instructions.
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-blue btn-ok" @click="showModalApplied = false">
+              Close
+            </a>
+          </div>
+        </div>
+      </transition>
+      <transition name="fade">
+        <div class="modal modal-details" v-if="showModalDetails">
+          <div
+            class="modal-body event"
+            :class="'b-t-' + showingEvent.type.color"
+          >
+            <div
+              class="event-image-cover"
+              :style="{'background-image': `url('${showingEvent.cover}')`}"
+            ></div>
+            <a
+              class="event-share-button"
+              @click="showModalShare = true"
+              title="Share this event with a friend"
+            ></a>
+            <div class="event-content">
+              <div class="event-info">
+                <div
+                  class="event-type"
+                  :class="'bg-' + showingEvent.type.color"
+                >
+                  <i class="fa" :class="showingEvent.type.icon"></i>
+                  {{ showingEvent.type.name }}
+                </div>
+                <div
+                  class="event-location"
+                  :class="{online: showingEvent.is_online }"
+                >
+                  <template v-if="showingEvent.is_online">
+                    <i class="fa fa-globe"></i>
+                    Online
+                  </template>
+                  <template v-else>
+                    <i class="fa fa-map-marker-alt"></i>
+                    {{ showingEvent.country }} - {{showingEvent.city}}
+                  </template>
+                </div>
               </div>
-              <div class="title">{{showingEvent.title}}</div>
-              <div class="resume">{{showingEvent.content.length }}</div>
-              <div class="footer">
-                <p class="event-date">
-                  <i class="fa fa-calendar-check"></i>
-                  {{showingEvent.start_date}}
-                  <template
-                    v-if="showingEvent.start_date !== showingEvent.end_date"
-                    >- {{showingEvent.end_date}}</template
-                  >
-                </p>
-              </div>
+              <div class="event-title">{{ showingEvent.title }}</div>
+              <p class="event-date">
+                <i class="fa fa-calendar-check"></i>
+                {{showingEvent.start_date}}
+                <template
+                  v-if="showingEvent.start_date !== showingEvent.end_date"
+                  >- {{showingEvent.end_date}}</template
+                >
+              </p>
+              <h3>Details</h3>
+              <p>{{showingEvent.content}}</p>
+              <!-- fake content to generate scroll -->
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+                volutpat dapibus fermentum. Donec hendrerit purus lacus, et
+                hendrerit ligula interdum nec. Cras faucibus suscipit odio at
+                volutpat. Phasellus vestibulum gravida pellentesque. Donec
+                pharetra tincidunt consectetur. Sed sem lorem, suscipit at justo
+                tincidunt, mattis volutpat lacus. Nam eu sem sed nibh tincidunt
+                pretium et ac nisi.
+              </p>
+              <p>
+                Quisque aliquet maximus eros, quis molestie turpis ornare vel.
+                Proin finibus non tellus sollicitudin dictum. In consequat
+                pulvinar lorem a dignissim. Nunc a consequat augue. Donec eget
+                vestibulum erat. Proin at elit id magna sodales pulvinar. Sed
+                convallis orci et metus convallis consectetur. In blandit purus
+                est, at ullamcorper lorem fermentum vitae. Aliquam felis quam,
+                gravida sit amet condimentum at, bibendum sit amet est. Donec
+                nulla risus, imperdiet commodo tristique et, maximus in tortor.
+              </p>
+              <p>
+                Fusce in ornare enim. Mauris euismod finibus tellus, a commodo
+                nunc sodales a. Suspendisse lobortis nulla quis nisi
+                consectetur, at aliquam nulla interdum. Cras hendrerit id enim
+                et hendrerit. Aliquam dolor nisi, euismod ut enim in, bibendum
+                dapibus nulla. Pellentesque nec nunc nisi. Aliquam erat
+                volutpat. Aliquam porta, erat commodo tincidunt tristique,
+                lectus tellus finibus libero, in dictum sapien justo sit amet
+                dui. Integer pharetra suscipit tellus non imperdiet.
+              </p>
+              <p>
+                Morbi mollis tortor tortor, et finibus elit interdum non. Morbi
+                non arcu tortor. Sed porttitor, augue ac lacinia ultrices, erat
+                elit ullamcorper urna, a consequat metus quam eget felis.
+                Pellentesque habitant morbi tristique senectus et netus et
+                malesuada fames ac turpis egestas. Etiam sagittis volutpat quam,
+                eget convallis tellus maximus finibus. Vivamus maximus purus et
+                velit bibendum vulputate. Donec bibendum enim felis, nec
+                pulvinar sem porta a. Praesent mattis bibendum neque, a gravida
+                eros euismod vitae. Integer ipsum ex, ornare mollis massa ut,
+                malesuada pellentesque nulla. Aliquam tristique eleifend
+                lobortis. Donec eget mi ac est pulvinar placerat vitae id
+                lectus. Pellentesque mattis lorem nulla, pretium rhoncus enim
+                malesuada eget. Pellentesque sed quam bibendum, malesuada sem
+                ac, tristique neque. Aliquam in odio ornare, vestibulum ante
+                nec, euismod metus.
+              </p>
+              <p>
+                Curabitur imperdiet, ipsum id dictum fringilla, lorem turpis
+                pulvinar sem, id malesuada sapien ex ac elit. Integer vulputate
+                tincidunt nisl id fermentum. Vestibulum ante ipsum primis in
+                faucibus orci luctus et ultrices posuere cubilia curae; Nunc
+                lobortis mi augue, eget egestas risus dictum eu. Duis in
+                pellentesque eros. Class aptent taciti sociosqu ad litora
+                torquent per conubia nostra, per inceptos himenaeos. Integer
+                risus velit, tempus sed consectetur vel, tincidunt vel lorem.
+                Proin semper sagittis arcu quis ornare. Quisque ut ante eget
+                lorem elementum ultricies. Sed semper tristique mauris, sed
+                interdum eros congue sed. Donec feugiat nibh dapibus ipsum
+                fermentum, eleifend mattis magna tincidunt. Nunc quam mi,
+                accumsan vel purus eleifend, mattis consequat mi. Ut et placerat
+                sapien.
+              </p>
             </div>
           </div>
           <div class="modal-footer">
@@ -214,11 +431,19 @@
               >Close</a
             >
             <a
-              href="https://vanhack.com/checkout"
+              v-if="!showingEvent.applied"
               target="_blank"
               class="btn btn-ok"
+              @click="apply"
               :class="{'btn-orange': !showingEvent.can_apply,'btn-blue': showingEvent.can_apply}"
               >Apply now</a
+            >
+            <a
+              v-else
+              target="_blank"
+              class="btn btn-ok btn-red"
+              @click="cancelApply"
+              >Cancel application</a
             >
           </div>
         </div>

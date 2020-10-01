@@ -5,12 +5,12 @@ new Vue({
       // Define types and set if it is public or no to apply
       types: [
         { id: 'all', name: 'All' },
-        { id: 1, name: 'MeetUp' },
-        { id: 2, name: 'Leap' },
-        { id: 3, name: 'Recruiting Mission' },
-        { id: 4, name: 'VanHackathon' },
-        { id: 5, name: 'Premium-only Webinar' },
-        { id: 6, name: 'Open Webinar' },
+        { id: 1, name: 'MeetUp', color: 'gray', icon: 'fa-comments' },
+        { id: 2, name: 'Leap', color: 'blue', icon: 'fa-share' },
+        { id: 3, name: 'Recruiting Mission', color: 'red', icon: 'fa-search-plus' },
+        { id: 4, name: 'VanHackathon', color: 'purple', icon: 'fa-fire' },
+        { id: 5, name: 'Premium-only Webinar', color: 'orange', icon: 'fa-star' },
+        { id: 6, name: 'Open Webinar', color: 'teal', icon: 'fa-check-square' },
       ],
       // Filter by type, default: all
       filterByType: "all",
@@ -18,7 +18,9 @@ new Vue({
       loading: true,
       showModalDetails: false,
       showModalError: false,
-      showingEvent: {}
+      showModalShare: false,
+      showModalApplied: false,
+      showingEvent: {},
     };
   },
   created() {
@@ -30,7 +32,6 @@ new Vue({
       this.loading = true;
       axios.get('https://my-json-server.typicode.com/roble/vanhack/events')
         .then(response => {
-          console.log(response);
           // Get the fetched  data
           this.events = response.data
             .map(e => ({
@@ -46,6 +47,23 @@ new Vue({
           // Unset loading state
           this.loading = false;
         })
+    },
+    apply() {
+      // Check and apply to event
+      if (!this.showingEvent.can_apply) this.showModalError = true
+      else {
+        this.showingEvent.applied = true;
+        this.showModalDetails = false;
+        this.$nextTick(() => {
+          this.showModalApplied = true;
+        })
+
+      }
+    },
+    cancelApply() {
+      // Cancel the application
+      this.showingEvent.applied = false;
+      this.showModalDetails = false;
     }
   },
   computed: {
@@ -53,6 +71,12 @@ new Vue({
       return this.filterByType === 'all'
         ? this.events
         : this.events.filter(e => e.type_id === this.filterByType)
+    },
+    isModalOpen() {
+      return this.showModalError
+        || this.showModalDetails
+        || this.showModalShare
+        || this.showModalApplied
     }
   }
 });
