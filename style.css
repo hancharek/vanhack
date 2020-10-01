@@ -327,7 +327,7 @@ body {
 
 #app section #events-container .card-content .event-type,
 #app section #events-container .card-content .event-location {
-  top: -20px;
+  top: -16px;
   font-size: 14px;
 }
 
