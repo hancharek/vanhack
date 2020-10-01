@@ -68,7 +68,7 @@
                 >
                   <keep-alive>
                     <picture>
-                      <img :src="`${event.cover}?random=${event.id}`" alt="" />
+                      <img :src="event.cover" alt="" />
                     </picture>
                   </keep-alive>
                   <div class="card-content">
@@ -172,7 +172,6 @@
               class="image-cover"
               :style="{'background-image': `url('${showingEvent.cover}')`}"
             >
-              {{`${showingEvent.cover}?random=${showingEvent.id}`}}
             </div>
             <div class="event-title">{{ showingEvent.title }}</div>
             <div class="card-content">
