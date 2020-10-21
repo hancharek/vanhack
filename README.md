@@ -29,7 +29,7 @@ To run this project you just have to clone this repository and access the index.
 - [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [Vue.js](https://vuejs.org)
 - [Axios](https://github.com/axios/axios)
-- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+- [SCSS](https://developer.mozilla.org/en-US/docs/Web/SCSS)
 - [Fontawesome](https://fontawesome.com)
 - [Google Fonts](https://fonts.google.com)
 
